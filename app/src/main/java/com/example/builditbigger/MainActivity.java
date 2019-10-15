@@ -25,25 +25,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getJoke();
-                if (!joke.isEmpty()) {
-
-                    Intent intent = new Intent(MainActivity.this, DisplayJokeActivity.class);
-                    intent.putExtra(DisplayJokeActivity.EXTRA_JOKE, joke);
-                    startActivity(intent);
-                }
             }
         });
 
     }
 
     void getJoke() {
-        try {
-            joke = new EndpointsAsyncTask().execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new EndpointsAsyncTask().execute(this);
     }
 
 

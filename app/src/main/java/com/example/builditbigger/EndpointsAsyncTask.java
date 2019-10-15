@@ -1,10 +1,12 @@
 package com.example.builditbigger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.example.displayjokelib.DisplayJokeActivity;
 import com.example.migration.endpoints.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -13,12 +15,13 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
-public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private static MyApi myApiService = null;
-
+    private Context context;
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected String doInBackground(Context... params) {
+        this.context=params[0];
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -45,7 +48,9 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
+        Intent intent = new Intent(context, DisplayJokeActivity.class);
+        intent.putExtra(DisplayJokeActivity.EXTRA_JOKE, result);
+        context.startActivity(intent);
     }
 
 
